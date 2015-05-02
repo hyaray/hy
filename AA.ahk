@@ -1,30 +1,30 @@
 #NoEnv
 #SingleInstance force
 #NoTrayIcon
-DetectHiddenWindows, on
-Path_lnk := "d:\text\backup\lnk"
+DetectHiddenWindows, On
+Path_lnk := "d:\Text\backup\lnk"
 Path_soft := "d:\soft"
 SysGet, zuobiao, Monitor
 #f:: ;网页搜索
-inputBox,var_in,网页搜索,请输入网站代码+搜索内容：`n百度=b，淘宝=t，京东=j，绿盟=l，GitHub=g`n如想百度aa，则输入baa
+InputBox,var_in,网页搜索,请输入网站代码+搜索内容：`n百度=b，淘宝=t，京东=j，绿盟=l，GitHub=g`n如想百度aa，则输入baa
 If ErrorLevel
-exit
+Exit
 StringLeft, wangzhan, var_in, 1
-StringRight, text, var_in, StrLen(var_in)-1
+StringRight, Text, var_in, StrLen(var_in)-1
 If (wangzhan)="b"
-run d:\Soft\Firefox\firefox.exe https://www.baidu.com/s?wd=%text%
-else If (wangzhan)="t"
-run d:\Soft\Firefox\firefox.exe http://s.taobao.com/search?q=%text%
-else If (wangzhan)="g"
-run d:\Soft\Firefox\firefox.exe https://github.com/search?utf8=`%E2`%9C`%93`&q=%text%
-else If (wangzhan)="l"
-run d:\Soft\Firefox\firefox.exe http://tag.xdowns.com/tag.asp?keyword=%text%
-else If (wangzhan)="j"
-run d:\Soft\Firefox\firefox.exe http://search.jd.com/Search?keyword=%text%&enc=utf-8
-return
-#s:: ;TC复制路径(ctrl-2)到“保存”对话框
+Run d:\Soft\Firefox\firefox.exe https://www.baidu.com/s?wd=%Text%
+Else If (wangzhan)="t"
+Run d:\Soft\Firefox\firefox.exe http://s.taobao.com/search?q=%Text%
+Else If (wangzhan)="g"
+Run d:\Soft\Firefox\firefox.exe https://github.com/search?utf8=`%E2`%9C`%93`&q=%Text%
+Else If (wangzhan)="l"
+Run d:\Soft\Firefox\firefox.exe http://tag.xdowns.com/tag.asp?keyword=%Text%
+Else If (wangzhan)="j"
+Run d:\Soft\Firefox\firefox.exe http://search.jd.com/Search?keyword=%Text%&enc=utf-8
+Return
+#s:: ;TC复制路径(Ctrl-2)到“保存”对话框
 SetTitleMatchMode, 2
-IfWinActive ahk_class TTOTAL_CMD
+IfWinActive Ahk_class TTOTAL_CMD
 {
     If WinExist("另存为") Or WinExist("保存") Or WinExist("Ahk_exe 7zFM.exe") Or WinExist("新建") Or WinExist("复制") 
     {
@@ -39,7 +39,7 @@ IfWinActive ahk_class TTOTAL_CMD
     	Else 
     {
 	Send, ^2
-	    Send, !{tab}
+	    Send, !{Tab}
     }
 	Sleep,100
 	Send,^v
@@ -50,167 +50,182 @@ IfWinActive ahk_class TTOTAL_CMD
 }
 Return
 #v:: ;打开Vim
-IfWinNOTExist ahk_class Vim
+IfWinNotExist Ahk_class Vim
 Run %path_lnk%\v.lnk
-   else
-   IfWinActive ahk_class Vim
+   Else
+   IfWinActive Ahk_class Vim
 		WinMinimize
-	else
+	Else
 		WinActivate
-return
+Return
 >!w:: ;微云备份
-gosub open_weiyun
-sleep 500
-loop
+Gosub open_weiyun
+Sleep 500
+Loop
 {
 Click 77,112
-    sleep, 200
+    Sleep, 200
     IfWinExist 打开
-    break
+    Break
 }
-sleep 500
-send ^v
-sleep 500
-send {enter}
-sleep 500
+Sleep 500
+Send ^v
+Sleep 500
+Send {Enter}
+Sleep 500
 Click 492,376
-return
+Return
 >!b:: ;微云笔记
-gosub open_weiyun
+Gosub open_weiyun
 Sleep 500
 Click 66,369
-return
+Return
 >!e:: ;AHK2EXE
-inputbox,name,,请输入要转换的文件名（不包括扩展名）:
+InputBox,name,,请输入要转换的文件名（不包括扩展名）:
 StringUpper, name, name  
-if ErrorLevel
-{ msgbox 脚本结束
-exit
+If ErrorLevel
+{ MsgBox 脚本结束
+Exit
 }
-run cmd.exe
-sleep,200
-sendinput, Ahk2Exe.exe /in "d:\text\AHK\%name%.ahk" /out "d:\text\AHK\EXE\%name%.exe" /bin "Unicode 64-bit.bin"{enter}
-sendinput, exit{enter}
-return
+Run cmd.exe
+Sleep,200
+SendInput, Ahk2Exe.exe /In "d:\Text\AHK\%name%.ahk" /out "d:\Text\AHK\EXE\%name%.exe" /bin "Unicode 64-bit.bin"{Enter}
+SendInput, Exit{Enter}
+Return
 >!/:: ;查看我的Q等级
+sleep, 200
 Send, !d
-sleep, 500
-click 158,56
-sleep 1000
-winwait,我的Q等级
-winmove,400,200
-sleep, 1000
-msgbox 4096,提示,确定后将自动关闭窗口
-winclose
-return
+Sleep, 500
+Click 158,56
+Sleep 1000
+WinWait,我的Q等级
+WinMove,400,200
+Sleep, 1000
+MsgBox 4096,提示,确定后将自动关闭窗口
+WinClose
+Return
 >!t:: ;计时器
-inputBox,time,计时器,请输入时间（秒）：
-time := time*1000
-sleep %time%
-msgBox 时间到
-return
+InputBox,Time,计时器,请输入时间（秒）：
+Time := Time*1000
+Sleep %Time%
+MsgBox 时间到
+Return
 >!c:: ;获取鼠标点颜色
-mouseGetPos mouseX, mouseY
-pixelGetColor, color, %mouseX%, %mouseY%, RGB
-stringRight color,color,6
-clipboard = %color%
+MouseGetPos mouseX, mouseY
+PixelGetColor, Color, %mouseX%, %mouseY%, RGB
+StringRight Color,Color,6
+Clipboard = %Color%
 ToolTip, 鼠标所在颜色值已发送到剪贴板
-sleep 2000
+Sleep 2000
 ToolTip,
-return
->!x::run %path_lnk%\XL.lnk 
->!p::run ping baidu.com -t
->!n::run ::{7007acc7-3202-11d1-aad2-00805fc1270e}
->!;::run d:\soft\Firefox\firefox.exe http://item.mi.com/static/buyhezi
->!'::run d:\soft\Firefox\firefox.exe d:\text\Backup\Web\Vim" "Scripts.htm
+Return
+>!x::Run %path_lnk%\XL.lnk 
+>!p::Run ping baidu.com -t
+>!n::Run ::{7007acc7-3202-11d1-aad2-00805fc1270e}
+>!;::Run d:\soft\Firefox\firefox.exe http://item.mi.com/Static/buyhezi
+>!'::Run d:\soft\Firefox\firefox.exe d:\Text\Backup\Web\Vim" "Scripts.htm
 >!,::Run d:\Soft\Firefox\firefox.exe http://1024diss.info/register.php
->!.::run d:\soft\Firefox\firefox.exe %Clipboard%
->!up:: ;音量+5
+>!.::Run d:\soft\Firefox\firefox.exe %Clipboard%
+>!Up:: ;音量+5
 SoundSetWaveVolume, +5
 SoundGetWaveVolume, OutputVar
-OutputVar := floor(OutputVar)
+OutputVar := Floor(OutputVar)
 ToolTip, 音量+　%OutputVar%, %zuobiaoRight%, %zuobiaoBottom%
 SetTimer, RemoveToolTip, 1000
-return
->!down:: ;音量-5
+Return
+>!Down:: ;音量-5
 SoundSetWaveVolume, -5
 SoundGetWaveVolume, OutputVar
-OutputVar := floor(OutputVar)
+OutputVar := Floor(OutputVar)
 ToolTip, 音量-　%OutputVar%, %zuobiaoRight%, %zuobiaoBottom%
 SetTimer, RemoveToolTip, 1000
-return
->!left:: ;静音
+Return
+>!Left:: ;静音
 SoundSetWaveVolume, 0
-tooltip, 静音, %zuobiaoRight%, %zuobiaoBottom%
+ToolTip, 静音, %zuobiaoRight%, %zuobiaoBottom%
 SetTimer, RemoveToolTip, 1000
-return
->!right:: ;音量最大
+Return
+>!Right:: ;音量最大
 SoundSetWaveVolume, 100
-tooltip, 音量 100, %zuobiaoRight%, %zuobiaoBottom%
+ToolTip, 音量 100, %zuobiaoRight%, %zuobiaoBottom%
 SetTimer, RemoveToolTip, 1000
-return
->^q::run %path_lnk%\QQ.lnk
->^h::run %path_lnk%\HY.lnk
->^m::run gvim --remote-tab-silent %Path_soft%\Vim\_vimrc
->^n::run gvim --remote-tab-silent %USERPROFILE%\_pentadactylrc
+Return
+>^q::Run %path_lnk%\QQ.lnk
+>^h::Run %path_lnk%\HY.lnk
+>^m::Run gvim --remote-Tab-silent %Path_soft%\Vim\_vimrc
+>^n::Run gvim --remote-Tab-silent %USERPROFILE%\_pentadactylrc
 >^r::Run %path_lnk%\RG.lnk
->^]::run d:\text\教程\Windows编程\Windows程序设计(第5版,珍藏版).pdf
->^[::run d:\text\教程\Windows编程\精通Windows.API-函数、接口、编程实例.pdf
->^'::run %path_soft%\AutoHotkey\AutoHotkey1.1.16.01全文搜索无乱码帮助.chm
->^;::run d:\text\教程\AutoHotkey\AutoHotkey 学习指南[残本].chm
->^,::run d:\text\软件设计师\谭浩强\C程序设计(第四版) 谭浩强 扫描版.pdf
->^/::run d:\text\教程\VIM\Vim用户手册中文版74.pdf 
->^.::run d:\text\教程\VIM\VIM实用技巧.pdf
-;run d:\文本\软件设计师\谭浩强\C程序设计(第四版) 谭浩强 扫描版.pdf
->^AppsKey::send,:`%s`/`\v
+>^]::Run d:\Text\教程\Windows编程\Windows程序设计(第5版,珍藏版).pdf
+>^[::Run d:\Text\教程\Windows编程\精通Windows.API-函数、接口、编程实例.pdf
+>^'::Run %path_soft%\AutoHotkey\AutoHotkey1.1.16.01全文搜索无乱码帮助.chm
+>^;::Run d:\Text\教程\AutoHotkey\AutoHotkey 学习指南[残本].chm
+>^,::Run d:\Text\软件设计师\谭浩强\C程序设计(第四版) 谭浩强 扫描版.pdf
+>^/::Run d:\Text\教程\VIM\Vim用户手册中文版74.pdf 
+>^.::Run d:\Text\教程\VIM\VIM实用技巧.pdf
+>^AppsKey::Send,:`%s`/`\v
 AppsKey & c:: ;复制当前行
-send {end}
-send +{home}
-send ^c
-return
+Send {End}
+Send +{Home}
+Send ^c
+Return
 RemoveToolTip:
 SetTimer, RemoveToolTip, Off
 ToolTip
-return
+Return
 Open_weiyun:
 SetTitleMatchMode, 3
-IFWinExist 微云
+IfWinExist 微云
 WinActivate
-else
+Else
 {
-    IfWinNotExist ahk_exe QQ.exe
+    IfWinNotExist Ahk_exe QQ.exe
     {
-    	msgbox, 没开QQ，退出脚本
-	    exit
+    	MsgBox, 没开QQ，退出脚本
+	    Exit
     }
-sleep 500
-send !d
-sleep 500
+Sleep 500
+Send !d
+Sleep 500
 Click 24,1000
-sleep 1000
+Sleep 1000
 WinWaitActive 微云
 WinActivate
 }
-loop
+Loop
 {
-    PixelGetColor, color,40,112
-	if (color = "0xFFFFFF")
-	  sleep, 200
-	else
-	  break
+    PixelGetColor, Color,40,112
+	If (Color = "0xFFFFFF")
+	  Sleep, 200
+	Else
+	  Break
 }
 Return
 +CapsLock::CapsLock
 CapsLock::LCtrl
-Lctrl::Return
->^F1::pause ;暂停脚本
->^F2::run %path_soft%\Autohotkey\AU3_Spy.exe
->^F3::edit
->^F4::reload ;停止并重新载入本脚本
+LCtrl::Return
 :*:zdate:: ;日期
 SendInput, %A_YYYY%年%A_MM%月%A_DD%日 %A_DDDD%
 Return
 :*:ztime:: ;时间
 SendInput, %A_YYYY%年%A_MM%月%A_DD%日 %A_Hour%:%A_Min%:%A_Sec%
-send,shenme
 Return
+:*:zga::
+clipboard := "git add "
+Send, +{ins}
+Return
+:*:zgs::
+clipboard := "git status -s"
+Send, +{ins}
+Return
+:*:zgp::
+clipboard := "git push origin master"
+Send, +{ins}
+Return
+:*:zgit::
+clipboard := "https://github.com/hyaray/hy.git"
+Send, +{ins}
+Return
+>^F1::Pause ;暂停脚本
+>^F2::Run %path_soft%\Autohotkey\AU3_Spy.exe
+>^F3::Edit
+>^F4::Reload ;停止并重新载入本脚本
