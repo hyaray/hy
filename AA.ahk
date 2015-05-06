@@ -208,6 +208,13 @@ Return
 +CapsLock::CapsLock
 CapsLock::LCtrl
 LCtrl::Return
+;热字串列表
+:*:zdate:: ;日期
+SendInput, %A_YYYY%年%A_MM%月%A_DD%日 %A_DDDD%
+Return
+:*:ztime:: ;时间
+SendInput, %A_YYYY%年%A_MM%月%A_DD%日 %A_Hour%:%A_Min%:%A_Sec%
+Return
 ;Git Bash热字串列表
 :*:zga::
 clipboard := "git add "
